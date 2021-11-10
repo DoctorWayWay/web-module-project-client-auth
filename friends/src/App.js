@@ -8,6 +8,7 @@ import LoginContext from "./contexts/LoginContext";
 // Component Imports
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
+import PrivateRoute from "./components/PrivateRoute";
 import FriendsList from "./components/FriendsList";
 
 const App = () => {
@@ -22,7 +23,7 @@ const App = () => {
       <div className="App">
         <NavBar />
         <Switch>
-          <Route path="/friends" component={FriendsList} />
+          <PrivateRoute exact path="/friends" component={FriendsList} />
           <Route path="/login" component={Login} />
           <Route path="/" component={Login} />
         </Switch>

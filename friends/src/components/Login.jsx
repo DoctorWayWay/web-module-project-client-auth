@@ -1,13 +1,16 @@
 // Library Imports
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import LoginContext from "../contexts/LoginContext";
 
-const Login = () => {
+const Login = (props) => {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+
+  const { loggedInStatus } = useContext(LoginContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,10 +29,10 @@ const Login = () => {
     axios
       .post("http://localhost:5000/api/login", credentials)
       .then((response) => {
-        // console.log(response);
         localStorage.setItem("token", response.data.payload);
         setIsLoading(false);
-        history.push("/");
+        history.push("/friends");
+        loggedInStatus();
       })
       .catch((error) => {
         console.error(error);
@@ -47,6 +50,7 @@ const Login = () => {
         <input
           type="text"
           name="username"
+          value={credentials.username}
           placeholder="Username"
           onChange={handleChange}
         />
@@ -56,6 +60,7 @@ const Login = () => {
         <input
           type="password"
           name="password"
+          value={credentials.password}
           placeholder="Password"
           onChange={handleChange}
         />

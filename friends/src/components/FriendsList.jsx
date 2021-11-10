@@ -7,7 +7,7 @@ import axiosWithAuth from "../utilities/axiosWithAuth";
 const FriendsList = () => {
   useEffect(() => {
     axiosWithAuth()
-      .get("/friends")
+      .get("http://localhost:5000/api/friends")
       .then((response) => {
         console.log(response);
       })
