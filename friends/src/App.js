@@ -1,20 +1,33 @@
 // Library Imports
-import React from "react";
+import React, { useState } from "react";
 import { Switch, Route } from "react-router-dom";
+
+// Context
+import LoginContext from "./contexts/LoginContext";
 
 // Component Imports
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
+import FriendsList from "./components/FriendsList";
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const loggedInStatus = () => {
+    localStorage.getItem("token") ? setIsLoggedIn(true) : setIsLoggedIn(false);
+  };
+
   return (
-    <div className="App">
-      <NavBar />
-      <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/" component={Login} />
-      </Switch>
-    </div>
+    <LoginContext.Provider value={{ isLoggedIn, loggedInStatus }}>
+      <div className="App">
+        <NavBar />
+        <Switch>
+          <Route path="/friends" component={FriendsList} />
+          <Route path="/login" component={Login} />
+          <Route path="/" component={Login} />
+        </Switch>
+      </div>
+    </LoginContext.Provider>
   );
 };
 
