@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const history = useHistory();
 
   const handleChange = (event) => {
     setCredentials({
@@ -13,12 +19,28 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleLogin = (event) => {
     event.preventDefault();
+    setIsLoading(true);
+    axios
+      .post("http://localhost:5000/api/login", credentials)
+      .then((response) => {
+        // console.log(response);
+        localStorage.setItem("token", response.data.payload);
+        setIsLoading(false);
+        history.push("/");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
+  if (isLoading) {
+    return <h3>Loading...</h3>;
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleLogin}>
       <label>
         Username:
         <input
